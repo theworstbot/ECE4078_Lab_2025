@@ -200,18 +200,18 @@ class Operate:
             ########### replace with your M1 codes ###########
             # drive forward
             if event.type == pygame.KEYDOWN and event.key == pygame.K_UP:
-                pass # TODO: replace with your M1 code to make the robot drive forward
+                self.command['motion'] = [5, 0]
             # drive backward
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_DOWN:
-                pass # TODO: replace with your M1 code to make the robot drive backward
+                self.command['motion'] = [-5, 0]
             # turn left
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT:
-                pass # TODO: replace with your M1 code to make the robot turn left
+                self.command['motion'] = [0, -5]
             # drive right
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
-                pass # TODO: replace with your M1 code to make the robot turn right
+                self.command['motion'] = [0, 5]
             ####################################################
-            # stop
+            # stop  
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 self.command['motion'] = [0, 0]
             # save image
