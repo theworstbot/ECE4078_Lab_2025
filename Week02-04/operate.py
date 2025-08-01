@@ -211,7 +211,7 @@ class Operate:
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
                 self.command['motion'] = [0, 5]
             ####################################################
-            # stop  
+            # stop
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 self.command['motion'] = [0, 0]
             # save image
