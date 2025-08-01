@@ -5,12 +5,7 @@ This README provides a step-by-step guide on setting up your environment and con
     - [Windows - Installing Anaconda](#installing-conda-and-requirements-on-windows)
     - [MacOS - Installing OrbStack](#installing-orbstack-on-macos)
     - [Linux Ubuntu - Installing Docker](#installing-docker-on-linux-ubuntu)
-- [Running the Container](#running-the-container)
-    - [Running on the Physical Robot](#running-on-the-physical-robot)
-        - [Inside the robot kit](#inside-the-kit)
-        - [Powering on and connecting to the robot](#powering-on-and-connecting-to-the-robot)
-        - [Running codes on the robot](#running-codes-on-the-robot)
-        - [Disconnecting and shutting down the robot](#disconnecting-and-shutting-down-the-robot)
+    - [Running the Container (Linux and Mac)](#running-the-container)
 - [Optional (Using VSCode Editor)](#optional-using-vscode-editor)
 - [Troubleshooting](#troubleshooting)
 
@@ -18,11 +13,13 @@ This README provides a step-by-step guide on setting up your environment and con
 
 # Setting up your device
 
-For Windows users, you will install all the required software via [Anaconda](https://www.anaconda.com/download). For Mac users, install [OrbStack](https://orbstack.dev/download) on your computer. For Linux user, just install `docker` according to your distro. The following sections will try to summarise the installation process for each OS.
+For Windows users, you will install all the required software via [Anaconda](https://www.anaconda.com/download). Note that if you are cloning the repository in Windows, **make sure that the repository is not cloned with OneDrive as this causes permission errors**. For Mac users, install [OrbStack](https://orbstack.dev/download) on your computer. For Linux user, just install `docker` according to your distro. The following sections will try to summarise the installation process for each OS. 
 
 ## Installing conda and required software on Windows
 
-1. Install [Anaconda](https://www.anaconda.com/download)
+1. Install [Anaconda](https://www.anaconda.com/download). We recommend selecting "Add Anaconda3 to my PATH environment variable" as shown below. If you already have Anaconda installed and do not have it added to PATH but would like it to be then we have instrucitons to do so [below](#adding-anaconda-to-path).
+
+    <img src="./pics/anaconda%20install%20settings.png" height="300" alt="Anaconda Install settings">
 
 2. Open Anaconda Navigator
 
@@ -38,22 +35,68 @@ For Windows users, you will install all the required software via [Anaconda](htt
 
 8. Click "Import" and wait for the importing process to finish
 
-9. In your terminal type the following where ```ENVNAME``` is the name you set for the environment in step 7
+### Using the Anaconda env
+
+#### In the terminal
+
+If you selected add to path in step 1 then in your terminal you can type the following where ```ENVNAME``` is the name you set for the environment in step 7
 
 ```
 conda activate ENVNAME
 ```
 
-10. You should see ```(ENVNAME)``` on the left of the input line of the terminal. This means you are in the env and all of the relevant packages should be avaliable to you. You can install new packages through the conda terminal or navigator as well as using pip. Please do not update packages that are already installed as you may create conflicts with the codebase.
+You should see ```(ENVNAME)``` on the left of the input line of the terminal. This means you are in the env and all of the relevant packages should be avaliable to you. You can install new packages through the conda terminal or navigator as well as using pip. Please do not update packages that are already installed as you may create conflicts with the codebase.
 
-11. Enter the following to exit the env
+Enter the following to exit the env
 
 ```
 conda deactivate
 ```
 
+Otherwise you can still use the provided "Anaconda Prompt" either by searching in windows or launching it from the Anaconda Navigator home page.
+
+#### In VS Code
+
+1. Open a .py file in vs code
+
+2. Click on the python version number in the bottom right corner of the window
+
+3. The environment your Anaconda environments should appear in the list as options which you can select
+
+4. The version number in the bottom right corner should update to reflect the selection you made.
+
+If you added Anaconda to path then you can also call conda activate in the vs code terminal to ues it there.
+
+### Adding Anaconda to PATH
+If you forgot to check the box during install, or already had Anaconda installed without adding it to PATH, then you can use the following instructions to add it to your systme PATH environment variable.
+
+1. Search for ```Edit the system environment variables``` in the start menu or search bar.
+
+2. Click the ```Environment Variables...``` button at the bottom the Sytem Properties window.
+
+3. In the top box (labelled "User variables for *username*") select the ```Path``` variable and click the ```Edit``` button.
+
+4. In the "Edit environment variable" window click the ```New``` button on the right and add the path of your anaconda installation. This is likely something like ```C:\Users\<USER>\anaconda3``` if you did a user level install or ```C:\ProgramData\Anaconda3``` if you did a system level install.
+
+5. Repeat step 4 but this time at ```\scripts``` to the end of the file path e.g. ```C:\Users\<USER>\anaconda3\scripts```
+
+6. Select ```OK``` on all of the windows that opened during this process.
+
+7. Close any terminals that were open before making these changes so they can refresh their PATH list when opened again.
 
 ## Installing OrbStack on MacOS
+
+**NOTE** If you already have experience with using Anaconda Navigator, and run into issues with dockerised containers, use Anaconda Navigator to create your new virtual environment.
+1. Install Anaconda Navigator
+2. Go to "Environments" tab on the left side of the app
+3. Click on "Create" on the bottom left of the app
+4. Name your environment something useful like "ECE4078_Lab"
+5. Check "Python" and make sure the Python version selected is on 3.9.23 then click "Create"
+6. Once your environment's created, click on your environment name, click the play button and "Open Terminal"
+7. Change directory to the Installation folder of this repository and run `pip install -r requirements.txt`
+8. And now you should have your virtual environment set up for the labs!
+
+Otherwise, if you prefer to use a dockerised container on Orbstack, you may ignore the above instructions and continue from here...
 Download and install [OrbStack](https://orbstack.dev/download). Note, choose the correct chip architecture (e.g. newer Macs have the Apple Silicon).
 
 ### Setting up Git Access
@@ -120,6 +163,9 @@ You now get a full environment where you can drop files/folders from host to con
 
 # Troubleshooting
 - [MacOS] If you have trouble with using Git within the docker container due to lack of permissions, try running `sudo chown -R ece4078:ece4078 /home/ece4078/ECE4078_Lab/` in your dev container terminal.
+- [Windows] If you encounter the error "PermissionError: [WinError 5] Access is denied: 'pibot_dataset/'", please make sure you have not cloned the folder into OneDrive. If you have done the initial clone into OneDrive, you cannot just copy the folder over, you will need to reclone the repository into another folder on your drive, as the permissions for that folder will not be set correctly otherwise
+- [Windows] If you get an error along the lines of "The term 'conda' is not recognized as a name of a cmdlet, function, script file, or executable program." then Anaconda has not been added to your system PATH environment variables. You can either [add Anaconda to your system PATH](#adding-anaconda-to-path) or use Anaconda Prompt from the system search or launched from Anaconda Navigator.
+
 
 <div style="page-break-after: always"></div>
 
